@@ -26,7 +26,7 @@ def dict2Sheet2Excel(probility_dict, output_path, start_year, end_year):
 			col = colNameList.index(header)
 			ws.write(_1stRow, col, header)
 		row = 1
-		for key, value in probility_dict[year]:
+		for key, value in probility_dict[year].items():
 			ws.write(row, 0, key)
 			ws.write_row(row, 1, value)
 			row += 1
