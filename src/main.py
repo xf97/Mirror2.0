@@ -105,7 +105,6 @@ class mirror:
 		for key, value in shareInfoDict.items():
 			#print(value)
 			if value != [None]:
-				print(value, "*")
 				shareId = key
 				sharePrice = value[0]
 				shareNumber = value[1]
