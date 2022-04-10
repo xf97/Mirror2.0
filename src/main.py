@@ -64,7 +64,11 @@ class mirror:
 		shareInfo.read_excel()
 		#初始价格表
 		initPriceSheet = shareInfo.data_dict[INIT_PRICE]
-		purchaseProbSheet = shareInfo.data_dict[PURCHASE_PROB]
+		#purchaseProbSheet = shareInfo.data_dict[PURCHASE_PROB]
+		# Mirror 2.0 更新
+		purchaseProbExcel = ExcelToDict(PURCHASE_PROB_PATH)
+		purchaseProbExcel.open_object()
+		purchaseProbExcel.read_excel()
 		shareNumberSheet = shareInfo.data_dict[SHARE_NUMBER]
 		#股票信息字典，键-id，值-列表，依次是初始价格、股票总数、想买概率列表
 		shareInfoDict = dict()
@@ -82,19 +86,30 @@ class mirror:
 					self.initFund = int(value["Cash"])
 				shareInfoDict[shareId].append(shareNum)
 		#初始化交易概率
+		'''
 		for valueDict in purchaseProbSheet["value_row"].values():
 			shareId = list(valueDict.values())[0]
 			sharePurcProbList = list(valueDict.values())[1:]
 			shareInfoDict[int(shareId)].append(sharePurcProbList)
+		'''
+		year = 2005
+		for sheetName in range(year, year + LAST_YEARS):
+			#取出工作簿
+			purchaseProbSheet = purchaseProbExcel.data_dict[str(sheetName)]
+			for valueDict in purchaseProbSheet["value_row"].values():
+				shareId = list(valueDict.values())[0]
+				sharePurcProbList = list(valueDict.values())[1:]
+				shareInfoDict[int(shareId)].append(sharePurcProbList)
 		#现在初始化股票
 		sharesList = list()
 		for key, value in shareInfoDict.items():
 			#print(value)
 			if value != [None]:
+				print(value, "*")
 				shareId = key
 				sharePrice = value[0]
 				shareNumber = value[1]
-				sharePurcProbList = value[2]
+				sharePurcProbList = value[2:]
 				sharesList.append(sc(sharePrice, shareNumber, sharePurcProbList, shareId))
 		'''
 		for obj in sharesList:
@@ -152,7 +167,7 @@ class mirror:
 				for shareIndex in shareIndexList:
 					#对于每只股票
 					#想买吗
-					if random.random() < self.sharesList[shareIndex].getPurchaseProb(0):
+					if random.random() < self.sharesList[shareIndex].getPurchaseProb(0, 0):
 						#想买
 						#去问其他账户
 						for anotherUserIndex in range(len(self.accountsList)):
@@ -264,7 +279,7 @@ class mirror:
 							continue
 						#想买吗
 						#买卖的过程中，会导致涨跌停
-						if random.random() < self.sharesList[shareIndex].getPurchaseProb(nowYear - 1):
+						if random.random() < self.sharesList[shareIndex].getPurchaseProb(nowYear - 1, nowMonth - 1):
 							#print("第%d只股票的交易概率-%.2f" % (shareIndex + 1, self.sharesList[shareIndex].getPurchaseProb(nowYear - 1)))
 							#想买
 							#去问其他账户

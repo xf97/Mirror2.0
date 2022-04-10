@@ -1,3 +1,4 @@
+
 #!/usr/bin/python
 
 '''
@@ -165,12 +166,15 @@ class shareClass:
 		return self.number
 
 	#_year指的是当前是第几年
-	def getPurchaseProb(self, _year):
+	#_month指的是当前是几月份
+	def getPurchaseProb(self, _year, _month):
 		if _year < 0 or _year >= len(self.probList):
 			raise Exception("错误的年份 %d" % _year)
+		elif _month < 0 or _month > 12:
+			raise Exception("错误的月份 %d" % _month )
 		else:
 			#否则应该返回对应年份的想买概率
-			return self.probList[_year]
+			return self.probList[_year][_month]
 
 	def getBidRange(self):
 		#返回出价范围
