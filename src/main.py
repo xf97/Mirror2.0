@@ -153,7 +153,6 @@ class mirror:
 	#自动交易以进一步分配股票和资金
 	def initAccounts_2(self, _days):
 		#初始化阶段无需更新涨跌停，也无需关心出范围
-		#print("hahah")
 		nowDay = 1
 		normalizationVolume = [1.0] * len(self.sharesList)
 		while nowDay <= _days:
@@ -195,7 +194,6 @@ class mirror:
 						#不想买，去问其他股票
 						continue
 			process = int(nowDay / _days * 100)
-			#print(process)
 			print("\rAccount:" + str(process) +"%", end = "")
 			nowDay += 1
 			#更新交易记录
