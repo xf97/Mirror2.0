@@ -276,7 +276,7 @@ class mirror:
 							continue
 						#想买吗
 						#买卖的过程中，会导致涨跌停
-						if random.random() < self.sharesList[shareIndex].getPurchaseProb(nowYear - 1, nowMonth - 1):
+						if random.random() < (self.sharesList[shareIndex].getPurchaseProb(nowYear - 1, nowMonth - 1) * self.accountsList[userIndex].doIMakeMoney()):
 							#print("第%d只股票的交易概率-%.2f" % (shareIndex + 1, self.sharesList[shareIndex].getPurchaseProb(nowYear - 1)))
 							#想买
 							#去问其他账户
