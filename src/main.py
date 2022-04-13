@@ -213,6 +213,15 @@ class mirror:
 		#根据当前年份，更新股票的数据
 		pass
 
+    def calculateProbility(self, _share, _account, _year, _month):
+    	prob = _share.getPurchaseProb(_year, _month) * _account.doIMakeMoney()
+    	if prob >= 1:
+    		return 1
+    	elif prob <= 0:
+    		return 0
+    	else:
+    		return prob
+
 	'''
 	可能需要引入numpy来返回符合正态分布的数据，来增大出价不触发涨停的概率
 	'''
@@ -276,7 +285,7 @@ class mirror:
 							continue
 						#想买吗
 						#买卖的过程中，会导致涨跌停
-						if random.random() < (self.sharesList[shareIndex].getPurchaseProb(nowYear - 1, nowMonth - 1) * self.accountsList[userIndex].doIMakeMoney()):
+						if random.random() < calculateProbility(self.sharesList[shareIndex], self.accountsList[userIndex], nowYear - 1, nowMonth - 1):
 							#print("第%d只股票的交易概率-%.2f" % (shareIndex + 1, self.sharesList[shareIndex].getPurchaseProb(nowYear - 1)))
 							#想买
 							#去问其他账户
