@@ -213,14 +213,14 @@ class mirror:
 		#根据当前年份，更新股票的数据
 		pass
 
-    def calculateProbility(self, _share, _account, _year, _month):
-    	prob = _share.getPurchaseProb(_year, _month) * _account.doIMakeMoney()
-    	if prob >= 1:
-    		return 1
-    	elif prob <= 0:
-    		return 0
-    	else:
-    		return prob
+	def calculateProbility(self, _share, _account, _year, _month):
+		prob = _share.getPurchaseProb(_year, _month) * _account.doIMakeMoney()
+		if prob >= 1:
+			return 1
+		elif prob <= 0:
+			return 0
+		else:
+			return prob
 
 	'''
 	可能需要引入numpy来返回符合正态分布的数据，来增大出价不触发涨停的概率
