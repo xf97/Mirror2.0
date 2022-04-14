@@ -285,7 +285,7 @@ class mirror:
 							continue
 						#想买吗
 						#买卖的过程中，会导致涨跌停
-						if random.random() < calculateProbility(self.sharesList[shareIndex], self.accountsList[userIndex], nowYear - 1, nowMonth - 1):
+						if random.random() <self. calculateProbility(self.sharesList[shareIndex], self.accountsList[userIndex], nowYear - 1, nowMonth - 1):
 							#print("第%d只股票的交易概率-%.2f" % (shareIndex + 1, self.sharesList[shareIndex].getPurchaseProb(nowYear - 1)))
 							#想买
 							#去问其他账户
@@ -326,7 +326,7 @@ class mirror:
 				for index, share in enumerate(self.sharesList):
 					#print("第%d只股票，前天收盘价-%.2f,今天收盘价-%.2f,共交易%d笔,当前冷却因子%.2f,当前偏移值%.2f" % (share.getShareId(), share.prePrice, share.price, self.transactionRecord.getHandCount(index), share.getCoolingValue(share.price), normalizationVolume[index]))
 					#print("%d# Stock，yesterday price-%.2f, today price-%.2f, total transaction %d, current cold value %.2f, current bias value %.2f" % (share.getShareId(), share.prePrice, share.price, self.transactionRecord.getHandCount(index), share.getCoolingValue(share.price), normalizationVolume[index]))
-					print("%d# Stock，yesterday price-%.2f, today price-%.2f, total transaction %d" % (share.getShareId(), share.prePrice, share.price, self.transactionRecord.getHandCount(index)))
+					print("%d# Stock，yesterday price-%.2f, today price-%.2f, total transaction-%d, this year this month purchase probility-%.2f" % (share.getShareId(), share.prePrice, share.price, self.transactionRecord.getHandCount(index), share.getPurchaseProb(nowYear - 1, nowMonth - 1)))
 				#记录当天收盘价
 				for share in self.sharesList:
 					share.setPrePrice()
