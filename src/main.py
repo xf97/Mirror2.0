@@ -214,7 +214,8 @@ class mirror:
 		pass
 
 	def calculateProbility(self, _share, _account, _year, _month):
-		prob = _share.getPurchaseProb(_year, _month) * _account.doIMakeMoney()
+		#原始购买概率x当前资金持有量x价格偏移值
+		prob = _share.getPurchaseProb(_year, _month) * _account.doIMakeMoney() * _share.getPriceDiffFactor(_year, _month)
 		if prob >= 1:
 			return 1
 		elif prob <= 0:
@@ -236,6 +237,11 @@ class mirror:
 			#每年开始，先记录当年的初始价格
 			for share in self.sharesList:
 				share.setNewYearPrice(share.getPrice())
+			#首年首个月，记录当月的初始价格
+			if nowYear == 1:
+				for share in self.sharesList:
+					if math.isclose(share.getNewMonthPrice(), 1.0):
+						share.setNewMonthPrice(share.getPrice())
 			#模拟二十年的
 			#print("*" * 20, str(nowYear) + " ", str(nowMonth) + " ", str(nowDay), "*" * 20)
 			while nowDay <= DAYS_IN_1_YEAR:
@@ -345,6 +351,9 @@ class mirror:
 				print("*" * 20, str(nowYear) + " Year ", str(nowMonth) + " Month ", str(nowDay), " Day ", "*" * 20)
 				if nowDay == DAYS_IN_1_MONTH[nowMonth - 1]:
 					#达到当月最后一天
+					#更新月末收盘价
+					for share in self.sharesList:
+						share.setNewMonthPrice(share.getPrice())
 					#记录数据
 					infoDict[nowMonth] = [share.getPrice() for share in self.sharesList]
 					nowMonth += 1	

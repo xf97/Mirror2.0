@@ -34,7 +34,28 @@ class shareClass:
 		self.monotonousDays = 1	#单调递增或递减的天数
 		self.monotonousFlag = 0	#当天相对于前一天是增是减
 		self.period = 2 * math.pi / (ONE_FOURTH_PERIOD * 4)
-		self.newYearPrice = 1
+		self.newYearPrice = 1.0
+		self.newMonthPrice = 1.0
+
+	def setNewMonthPrice(self, _newMonthPrice):
+		self.newMonthPrice = _newMonthPrice
+
+	def getNewMonthPrice(self):
+		return self.newMonthPrice
+
+	def getPriceDiffFactor(self, _year, _month):
+		#假设涨了20%的时候，概率折半
+		diff = abs(self.price - self.newMonthPrice) / self.newMonthPrice
+		if diff >= UPPER_LIMIT_OF_PRICE_CHANGE:
+			return UPPER_LIMIT_OF_PROB_DECLINE[_year][_month]
+		else:
+			#涨跌幅小于UPPER_LIMIT_OF_PRICE_CHANGE时，使用cos函数缓慢下降
+			#先计算函数
+			biasX = math.acos(UPPER_LIMIT_OF_PROB_DECLINE[_year][_month])	#获取边界x值
+			#计算周期
+			period = biasX / UPPER_LIMIT_OF_PRICE_CHANGE #得到欧米伽值
+			#现在，计算偏移量
+			return math.cos(period * diff)
 
 	#打印对象使用
 	def __str__(self):
@@ -59,7 +80,6 @@ class shareClass:
 		self.prePrice = self.price
 
 	def getCoolingValue(self, _price):
-		#print(self.monotonousDays)
 		#先计算差距，涨幅或者是跌幅
 		diff = abs(_price - self.newYearPrice) / self.newYearPrice
 		if diff == 0:
@@ -212,16 +232,5 @@ class shareClass:
 #单元测试
 if __name__ == "__main__":
 	probList = [1] * 20
-	aShare = shareClass(10, 10000, probList, 1)
-	print(aShare.getPrice())
-	print(aShare.getBidRange())
-	print(aShare.getShareId())
-	print(aShare.getStopFlag())
-	print(aShare.getPurchaseProb(19))
-	print(aShare.setPrice(11))
-	print(aShare.getPrice())
-	print(aShare.getBidRange())
-	print(aShare.getShareId())
-	print(aShare.getStopFlag())
-	print(aShare.dailyInit())
-	print(aShare.setPrice(10.5))
+	aShare = shareClass(1.02, 10000, probList, 1)
+	print(aShare.getPriceDiffFactor())

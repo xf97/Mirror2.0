@@ -33,9 +33,46 @@ def getUserNeeds():
 userNeeds = getUserNeeds()
 
 INIT_TRANS_DAYS = 20 #初始化天数 
-LAST_YEARS = userNeeds["LAST_YEARS"]	# 持续调查17年
+LAST_YEARS = userNeeds["LAST_YEARS"]	# 持续调查16年
 USERS_NUM = userNeeds["USERS_NUM"] 	#参与账户数量
 SHARES_NUM = userNeeds["SHARES_NUM"]	#参与的股票数量
-DAYS_IN_1_YEAR = 246	#一年平均有247天交易日
+DAYS_IN_1_YEAR = 246	#一年平均有246天交易日
 DAYS_IN_1_MONTH = [20, 35, 58, 79, 99, 119, 140, 163, 183, 201, 223, 246] 	#每月最后一个交易日
 SALE_PROBABILITY = 0.5	#想出售的概率
+UPPER_LIMIT_OF_PROB_DECLINE = list() #每个月100只购买概率的均值+标准差
+UPPER_LIMIT_OF_PRICE_CHANGE = 0.2	#每月触发涨跌值的边界值
+
+from excel2Dict import ExcelToDict
+import numpy
+
+def calculateOmegaAndSigma():
+	purchaseProbExcel = ExcelToDict(PURCHASE_PROB_PATH)
+	purchaseProbExcel.open_object()
+	purchaseProbExcel.read_excel()
+	everyYearEveryMonthProbilityList = list()
+	year = 2005
+	for sheetName in range(year, year + LAST_YEARS):
+		aYearProbilityList = list()
+		for _ in range(12):
+			aMonthList = list()
+			aYearProbilityList.append(aMonthList)
+		#取出工作簿
+		purchaseProbSheet = purchaseProbExcel.data_dict[str(sheetName)]
+		for valueDict in purchaseProbSheet["value_row"].values():
+			sharePurcProbList = list(valueDict.values())[1:]
+			#拿出一只股票12个月的概率，填充到今年
+			for index in range(12):
+				aYearProbilityList[index].append(sharePurcProbList[index])
+		#print(len(aYearProbilityList), len(aYearProbilityList[0]))
+		everyYearEveryMonthProbilityList.append(aYearProbilityList)
+	for year in everyYearEveryMonthProbilityList:
+		aYear = list()
+		for month in year:
+			#计算这100个数的均值和方差
+			omega = sum(month) / len(month)
+			sigma = numpy.std(month, ddof = 1)
+			aYear.append(omega + sigma)
+		UPPER_LIMIT_OF_PROB_DECLINE.append(aYear)
+
+
+calculateOmegaAndSigma()
