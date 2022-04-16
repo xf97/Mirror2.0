@@ -45,7 +45,8 @@ class shareClass:
 
 	def getPriceDiffFactor(self, _year, _month):
 		#假设涨了20%的时候，概率折半
-		diff = abs(self.price - self.newMonthPrice) / self.newMonthPrice
+		#diff = abs(self.price - self.newMonthPrice) / self.newMonthPrice
+		diff = abs(self.price - self.newYearPrice) / self.newYearPrice
 		if diff >= UPPER_LIMIT_OF_PRICE_CHANGE:
 			return UPPER_LIMIT_OF_PROB_DECLINE[_year][_month]
 		else:

@@ -359,6 +359,8 @@ class mirror:
 					nowMonth += 1	
 				nowDay += 1
 			#一年结束
+			#打印本年资金量
+			self.transactionRecord.newYearComes(2005 + nowYear)
 			#记录本年数据
 			dict2Excel(nowYear, infoDict, SHARES_NUM, "Month/Stock")
 			nowYear += 1

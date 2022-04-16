@@ -20,6 +20,7 @@ class transactionClass:
 		self.totalTransactionNum = [0.0] * _shareNum #记录每只股票的总交易量
 		self.shareNum = _shareNum
 		self.todayPriceList = [0.0] * _shareNum
+		self.lastYearTransactionNum = self.totalTransactionNum[:]	#去年的此数值
 		self.handCount = [0] * _shareNum 	#记录每只股票昨天被买卖了多少笔
 
 	def setSharePrice(self, _index, _price):
@@ -33,6 +34,20 @@ class transactionClass:
 
 	def getHandCount(self, _shareIndex):
 		return self.handCount[_shareIndex]
+
+	def newYearComes(self, _lastYear):
+		#记录，先计算差值
+		diffValueList = [0.0] * len(self.totalTransactionNum)
+		index = 0
+		for preNum, currNum in zip(self.lastYearTransactionNum, self.totalTransactionNum):
+			diffValueList[index] = str(index + 1) + " " + str(currNum - preNum) + "\n"
+			index += 1
+		#保存数据
+		with open(SHARE_MONEY_NUM_PATH + str(_lastYear) + ".txt", "w", encoding = "utf-8") as f:
+			#写入此列表
+			f.writelines(diffValueList)
+		#更新数据
+		self.lastYearTransactionNum = self.totalTransactionNum[:]
 
 	#新的一天来到
 	def newDayComes(self):
@@ -88,6 +103,8 @@ class transactionClass:
 #单元测试
 if __name__ == "__main__":
 	tc = transactionClass(50)
+	tc.newYearComes(2005)
+	'''
 	tc.newTransactionComes(1, 50000)
 	tc.newTransactionComes(10, 2000000)
 	tc.newTransactionComes(12, 22100000)	
@@ -96,3 +113,4 @@ if __name__ == "__main__":
 	print(tc.getYesterdayAveTransNum())	
 	tc.newDayComes()
 	print(tc.getYesterdayAveTransNum())			
+	'''

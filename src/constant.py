@@ -21,6 +21,7 @@ LOSS_VALUE = 1e-10	#适当损失，用于在归一化时进一步收窄，避免
 ONE_FOURTH_PERIOD = 0.05	#允许连续增长或下跌的周期（价格增长或降幅），超过该值则冷却值变号
 USERS_NEEDS_PATH = "..\\userNeeds.json"	#用户配置文档
 PURCHASE_PROB_PATH = "..\\data\\purchaseProb.xlsx"	#每年每月每支股票的购买概率
+SHARE_MONEY_NUM_PATH = "..\\data\\"	#资金量保存目录
 
 def getUserNeeds():
 	with open(USERS_NEEDS_PATH, "r", encoding = "utf-8") as f:
