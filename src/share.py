@@ -36,6 +36,23 @@ class shareClass:
 		self.period = 2 * math.pi / (ONE_FOURTH_PERIOD * 4)
 		self.newYearPrice = 1.0
 		self.newMonthPrice = 1.0
+		self.basePrice = _price # 基本价值
+
+	def getBaseDiff(self):
+		diff = (self.price - self.basePrice) / self.basePrice
+		#判断涨跌
+		if diff >= 0:
+			if diff >= BASE_PRICE_DIFF_UPPER:
+				#达到涨价上限
+				return math.acos(BASE_PRICE_DIFF_UPPER) - math.pi/2 + 1
+			else:
+				return math.acos(diff) - math.pi/2 + 1
+		else:
+			if diff <= BASE_PRICE_DIFF_LOWER:
+				#达到跌价下限
+				return math.acos(BASE_PRICE_DIFF_LOWER) - math.pi/2 + 1
+			else:
+				return math.acos(diff) - math.pi/2 + 1
 
 	def setNewMonthPrice(self, _newMonthPrice):
 		self.newMonthPrice = _newMonthPrice

@@ -77,3 +77,8 @@ def calculateOmegaAndSigma():
 
 
 calculateOmegaAndSigma()
+
+import math
+
+BASE_PRICE_DIFF_UPPER = math.cos(math.pi/2 - 1/2)
+BASE_PRICE_DIFF_LOWER = math.cos(math.pi/2 + 1/2)

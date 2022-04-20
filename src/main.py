@@ -215,7 +215,7 @@ class mirror:
 
 	def calculateProbility(self, _share, _account, _year, _month):
 		#原始购买概率x当前资金持有量x价格偏移值
-		prob = _share.getPurchaseProb(_year, _month) * _account.doIMakeMoney() * _share.getPriceDiffFactor(_year, _month)
+		prob = _share.getPurchaseProb(_year, _month) * _account.doIMakeMoney() * _share.getBaseDiff()  # * _share.getPriceDiffFactor(_year, _month)
 		if prob >= 1:
 			return 1
 		elif prob <= 0:
@@ -291,7 +291,7 @@ class mirror:
 							continue
 						#想买吗
 						#买卖的过程中，会导致涨跌停
-						if random.random() <self. calculateProbility(self.sharesList[shareIndex], self.accountsList[userIndex], nowYear - 1, nowMonth - 1):
+						if random.random() < self.calculateProbility(self.sharesList[shareIndex], self.accountsList[userIndex], nowYear - 1, nowMonth - 1):
 							#print("第%d只股票的交易概率-%.2f" % (shareIndex + 1, self.sharesList[shareIndex].getPurchaseProb(nowYear - 1)))
 							#想买
 							#去问其他账户
