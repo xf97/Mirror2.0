@@ -215,7 +215,7 @@ class mirror:
 
 	def calculateProbility(self, _share, _account, _year, _month):
 		#原始购买概率x当前资金持有量x价格偏移值
-		prob = _share.getPurchaseProb(_year, _month) * _share.getBaseDiff()  #  * _account.doIMakeMoney() * _share.getPriceDiffFactor(_year, _month)
+		prob = _share.getPurchaseProb(_year, _month) * _share.getBaseDiff() * _account.doIMakeMoney() #* _share.getPriceDiffFactor(_year, _month)
 		if prob >= 1:
 			return 1
 		elif prob <= 0:
