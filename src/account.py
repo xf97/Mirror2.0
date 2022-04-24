@@ -23,7 +23,7 @@ class accountClass:
 		self.stockHolding = [0] * len(_sharesInfoList)	#持有的股票, 列表第i位的数值表示该用户持有第i只股票的数量
 		self.stockPriceAndNum = dict()
 		self.interest = 0.0	#利息, 尚不明确该属性是否需要，暂不需要，但暂不删除
-		self.initFund = _fund #初始资金
+		self.initFund = _fund // 2 #初始资金
 
 	#返回当前的资金与初始资金的比值
 	def doIMakeMoney(self):
