@@ -81,4 +81,4 @@ calculateOmegaAndSigma()
 import math
 
 BASE_PRICE_DIFF_UPPER = 0.2
-BASE_PRICE_DIFF_LOWER = -0.5
+BASE_PRICE_DIFF_LOWER = -0.2

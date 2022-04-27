@@ -44,15 +44,15 @@ class shareClass:
 		if diff >= 0:
 			if diff >= BASE_PRICE_DIFF_UPPER:
 				#达到涨价上限
-				return math.acos(1.6 * BASE_PRICE_DIFF_UPPER) - math.pi/2 + 1
+				return math.acos(3 * BASE_PRICE_DIFF_UPPER) - math.pi/2 + 1
 			else:
-				return math.acos(1.6 * diff) - math.pi/2 + 1
+				return math.acos(3 * diff) - math.pi/2 + 1
 		else:
 			if diff <= BASE_PRICE_DIFF_LOWER:
 				#达到跌价下限
-				return math.acos(1.6 * BASE_PRICE_DIFF_LOWER) - math.pi/2 + 1
+				return math.acos(3 * BASE_PRICE_DIFF_LOWER) - math.pi/2 + 1
 			else:
-				return math.acos(1.6 * diff) - math.pi/2 + 1
+				return math.acos(3 * diff) - math.pi/2 + 1
 
 	def setNewMonthPrice(self, _newMonthPrice):
 		self.newMonthPrice = _newMonthPrice
